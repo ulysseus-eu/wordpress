@@ -1,0 +1,39 @@
+version: "2021.0"
+
+services:
+    db:
+        image: "mysql:8.0.26"
+        volumes:
+            - ${MYSQL_DATA_DIR}:/var/lib/mysql
+        restart: unless-stopped
+        container_name: db_wordpress_compose
+        secrets:
+            - wp_db_pw
+            - db_root_pw
+        environment:
+            MYSQL_ROOT_PASSWORD_FILE: "/run/secrets/db_root_pw"
+            MYSQL_DATABASE: wordpress
+            MYSQL_USER: ${WP_DB_USER}
+            MYSQL_PASSWORD_FILE: "/run/secrets/ls_db_pw"
+    wordpress:
+        image: "wordpress:5.8.1-fpm-apline"
+        restart: unless-stopped
+        container_name: wordpress_compose
+        depends_on:
+            - db
+        volumes:
+            - ${WP_DATA_DIR}:/var/www/html/wp-content
+        ports:
+            - "8880:80"
+        secrets:
+            - wp_db_pw
+        environment:
+            WORDPRESS_DB_HOST: db:3306
+            WORDPRESS_DB_NAME: wordpress
+            WORDPRESS_DB_USER: ${WP_DB_USER}
+            WORDPRESS_DB_PASSWORD_FILE: "/run/secrets/wp_db_pw"
+secrets:
+    wp_db_pw : 
+        file : ${WP_DB_PW}
+    db_root_pw : 
+        file : ${DB_ROOT_PW}
