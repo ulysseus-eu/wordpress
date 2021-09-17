@@ -1,5 +1,4 @@
-version: "2021.0"
-
+version: "3.7"
 services:
     db:
         image: "mysql:8.0.26"
@@ -14,9 +13,9 @@ services:
             MYSQL_ROOT_PASSWORD_FILE: "/run/secrets/db_root_pw"
             MYSQL_DATABASE: wordpress
             MYSQL_USER: ${WP_DB_USER}
-            MYSQL_PASSWORD_FILE: "/run/secrets/ls_db_pw"
+            MYSQL_PASSWORD_FILE: "/run/secrets/wp_db_pw"
     wordpress:
-        image: "wordpress:5.8.1-fpm-apline"
+        image: "wordpress:5.8.1-php8.0-fpm-alpine"
         restart: unless-stopped
         container_name: wordpress_compose
         depends_on:
