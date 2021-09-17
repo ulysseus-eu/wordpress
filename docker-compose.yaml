@@ -15,7 +15,7 @@ services:
             MYSQL_USER: ${WP_DB_USER}
             MYSQL_PASSWORD_FILE: "/run/secrets/wp_db_pw"
     wordpress:
-        image: "wordpress:5.8.1-php8.0-fpm-alpine"
+        image: "wordpress:5.8.1-php8.0"
         restart: unless-stopped
         container_name: wordpress_compose
         depends_on:
@@ -23,7 +23,7 @@ services:
         volumes:
             - ${WP_DATA_DIR}:/var/www/html/wp-content
         ports:
-            - "8880:80"
+            - 8880:80
         secrets:
             - wp_db_pw
         environment:
