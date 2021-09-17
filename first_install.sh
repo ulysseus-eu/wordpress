@@ -1,9 +1,7 @@
 sudo apt update
 sudo apt install docker.io -y
 sudo apt install docker-compose -y
-cp sample.env .env
-mkdir wp_data
-mkdir db_data
+cat .env.sample | sed 's|<your-wp-data-dir>|./wp_data|' | sed 's|<your-wp-db-user>|wordpress_user|' | sed 's|<your-mysql-data-path>|./db_data|' > .env
 mkdir secrets
 echo "What should be your database root password?"
 read db_root_pw
