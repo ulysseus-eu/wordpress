@@ -21,7 +21,10 @@ services:
         depends_on:
             - db
         volumes:
-            - ${WP_DATA_DIR}:/var/www/html/wp-content
+            - ${WP_DATA_DIR}/wp-content:/var/www/html/wp-content
+            - ${WP_DATA_DIR}/wp-config.php:/var/www/html/wp-config.php
+            - ${WP_DATA_DIR}/.htaccess:/var/www/html/.htaccess
+            - ${WP_DATA_DIR}/php.ini:/usr/local/etc/php/php.ini
         ports:
             - 8880:80
         secrets:
