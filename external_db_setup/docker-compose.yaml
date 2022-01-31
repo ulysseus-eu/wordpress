@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+    wordpress_nodb:
+        image: "wordpress:5.8.1-php8.0"
+        restart: unless-stopped
+        container_name: wordpress_compose_ext_db
+        volumes:
+            - ${WP_DATA_DIR}/data:/var/www/html
+            - ${WP_DATA_DIR}/wp-config.php:/var/www/html/wp-config.php
+            - ${WP_DATA_DIR}/.htaccess:/var/www/html/.htaccess
+            - ${WP_DATA_DIR}/php.ini:/usr/local/etc/php/php.ini
+        ports:
+            - 8880:80
+        secrets:
+            - wp_db_pw
+        environment:
+            WORDPRESS_DB_HOST: ${WP_DB_HOST}:${WP_DB_PORT}
+            WORDPRESS_DB_NAME: ${WP_DB_NAME}
+            WORDPRESS_DB_USER: ${WP_DB_USER}
+            WORDPRESS_DB_PASSWORD_FILE: "/run/secrets/wp_db_pw"
+secrets:
+    wp_db_pw : 
+        file : ${WP_DB_PW}
